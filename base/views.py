@@ -19,7 +19,6 @@ def scan_song(request):
         audio_file = request.FILES.get('audio_file')
 
         if audio_link:
-            # API poziv s URL-om pjesme
             response = requests.post(
                 'https://api.audd.io/',
                 data={
@@ -44,10 +43,8 @@ def scan_song(request):
             else:
                 return JsonResponse({"error": "No song data found."})
         elif audio_file:
-            # Upload datoteke na Amazon S3 i dohvati URL
             s3_url = upload_to_s3(audio_file)
             if s3_url:
-                # API poziv s URL-om pjesme
                 response = requests.post(
                     'https://api.audd.io/',
                     data={
@@ -79,7 +76,6 @@ def scan_song(request):
     return JsonResponse({"error": "Invalid request"})
 
 def upload_to_s3(file):
-    # Postavite svoje AWS vjerodajnice i konfiguraciju
     aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
     aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
     bucket_name = os.environ.get('AWS_STORAGE_BUCKET_NAME')
