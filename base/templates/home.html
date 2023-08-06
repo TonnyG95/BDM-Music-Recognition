@@ -4,19 +4,17 @@
 {% block content %}
 
 <div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="p-5 rounded shadow box" style="max-width: 50%;">
-        <h6 class='my-3'>Welcome to BDM QC assistant, check your song before sending for distribution</h6>
-        <h3 class='my-3'>Enter URL to your audio file</h3>
+    <div class="p-5 rounded shadow box col-md-8 col-sm-10">
+        <h6 class='my-3'>Hey there! 👋 Welcome to BDM's Quality Control Buddy. Let's give your song a quick check before sharing it with the world!</h6>
+        <h5 class='my-4'>Enter URL to your audio file</h5>
         <form method="post" id="audio_form">
             {% csrf_token %}
             <input id="audio_link" class="form-control form-control-lg my-3" type="url" name="audio_link" placeholder="URL to your audio file" aria-label=".form-control-lg example" required>
-            <div class="container d-flex justify-content-center align-items-center">
-                <div>
-                    <button type="button" id="check_button" class='btn btn-lg btn-light my-3 justify-content-center'>Check file using URL <i class="fa-brands fa-nfc-directional fa-spin"></i></button>
-                    <label for="formFileLg" class="form-label mt-3">Or Upload file</label>
-                    <input class="form-control form-control-lg" id="formFileLg" type="file" accept="audio/*">
-                    <button type="button" id="upload_button" class='btn btn-lg btn-light my-3'>Upload and Check <i class="fa-solid fa-upload fa-bounce"></i> </button>
-                </div>
+            <div class="container d-flex flex-column justify-content-center align-items-center">
+                <button type="button" id="check_button" class='btn btn-lg btn-light my-3 justify-content-center'>Check file using URL <i class="fa-brands fa-nfc-directional fa-spin"></i></button>
+                <label for="formFileLg" class="form-label my-4">Or Upload file</label>
+                <input class="form-control form-control-lg" id="formFileLg" type="file" accept="audio/*">
+                <button type="button" id="upload_button" class='btn btn-lg btn-light my-4'>Upload and Check <i class="fa-solid fa-upload fa-bounce"></i> </button>
             </div>
         </form>
         <div id="song_data" class="mt-4 text-center text-light">
@@ -27,8 +25,6 @@
         </div>
     </div>
 </div>
-
-<p>S-Link is developed by BDM Network</p>
 
 <!-- Dodajte Bootstrap JS i jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
