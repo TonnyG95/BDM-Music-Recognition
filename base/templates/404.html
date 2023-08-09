@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="p-5 rounded shadow box col-md-8 col-sm-10">
+        <h6 class='my-3'>Hey there! 👋 Welcome to BDM's Quality Control Buddy. Let's give your song a quick check before sharing it with the world!</h6>
+        <h5 class='my-4'>Enter URL to your audio file</h5>
+        <form method="post" id="audio_form">
+            {% csrf_token %}
+            <input id="audio_link" class="form-control form-control-lg my-3" type="url" name="audio_link" placeholder="URL to your audio file" aria-label=".form-control-lg example" required>
+            <div class="container d-flex flex-column justify-content-center align-items-center">
+                <button type="button" id="check_button" class='btn btn-lg btn-light my-3 justify-content-center'>Check file using URL <i class="fa-brands fa-nfc-directional fa-spin"></i></button>
+                <label for="formFileLg" class="form-label my-4">Or Upload file</label>
+                <input class="form-control form-control-lg" id="formFileLg" type="file" accept="audio/*">
+                <button type="button" id="upload_button" class='btn btn-lg btn-light my-4'>Upload and Check <i class="fa-solid fa-upload fa-bounce"></i> </button>
+            </div>
+        </form>
+        <div id="song_data" class="mt-4 text-center text-light">
+            <!-- JavaScript response-->
+        </div>
+        <div id="song_data_result" class="mt-4 text-center text-light">
+             <!-- JavaScript response-->
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS i jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+</script>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    $('#check_button').click(function() {
+        var audioLink = $('#audio_link').val();
+    
+        if (audioLink) {
+            $.ajax({
+                url: '/scan_song/',
+                type: 'post',
+                headers: {
+                    "X-CSRFToken": csrftoken 
+                },
+                data: { 'audio_link': audioLink },
+                success: function(response) {
+                    console.log(response);
+                    if (response.title) {
+                        var songInfo = `
+                            <h5 class="text-center text-danger my-3">The song is possibly copyright infringement <i class="fa-regular fa-circle-xmark fa-beat" style="color: #c64948;"></i> </h5>
+                            <p><strong>Title:</strong> ${response.title}</p>
+                            <p><strong>Artist:</strong> ${response.artist}</p>
+                            <p><strong>Album:</strong> ${response.album}</p>
+                            <p><strong>Release Date:</strong> ${response.release_date}</p>
+                            <p><strong>Label:</strong> ${response.label}</p>
+                            <a target='_blank' href="${response.song_link}" class="btn btn-lg btn-primary">Smart Link <i class="fa-solid fa-play fa-bounce"></i></a>
+                        `;
+                        $('#song_data').html(songInfo);
+                    } else {
+                        $('#song_data').html('<h5 class="text-center text-success my-3">The song is clear and ready for distribution <i class="fa-solid fa-check fa-bounce" style="color: #468442;"></i> </h5>');
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        } else {
+            alert("Please enter a URL.");
+        }
+    });
+    
+
+    $('#upload_button').click(function() {
+        var audioFile = $('#formFileLg')[0].files[0];
+    
+        if (audioFile) {
+            var formData = new FormData();
+            formData.append('audio_file', audioFile);
+    
+            $.ajax({
+                url: '/scan_song/',
+                type: 'post',
+                headers: {
+                    "X-CSRFToken": csrftoken 
+                },
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log(response);
+                    if (response.title) {
+                        var songInfo = `
+                            <h5 class="text-center text-danger my-3">The song is possibly copyright infringement <i class="fa-regular fa-circle-xmark fa-beat" style="color: #c64948;"></i> </h5>
+                            <p><strong>Title:</strong> ${response.title}</p>
+                            <p><strong>Artist:</strong> ${response.artist}</p>
+                            <p><strong>Album:</strong> ${response.album}</p>
+                            <p><strong>Release Date:</strong> ${response.release_date}</p>
+                            <p><strong>Label:</strong> ${response.label}</p>
+                            <a target='_blank' href="${response.song_link}" class="btn btn-lg btn-primary">Smart Link <i class="fa-solid fa-play fa-bounce"></i></a>
+                        `;
+                        $('#song_data_result').html(songInfo);
+                    } else {
+                        $('#song_data_result').html('<h5 class="text-center text-success my-3">The song is clear and ready for distribution <i class="fa-solid fa-check fa-bounce" style="color: #468442;"></i> </h5>');
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        } else {
+            alert("Please select an audio file to upload.");
+        }
+    });
+</script>
+
+{% endblock content %}

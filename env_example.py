@@ -3,6 +3,7 @@ import os
 # Main Settings
 
 os.environ["SECRET_KEY"] = "Your secret key"
+os.environ["DEBUG"] = "0" # 0 = False, 1 = True
 
 # Audd.io API Key
 os.environ["api_token"] = "Your api token"
