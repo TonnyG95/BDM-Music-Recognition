@@ -1,7 +1,7 @@
 
-# BDM Music Recognition WebApp
+# BDM QC Buddy
 
-BDM Music Recognition is a web application that allows users to scan and identify songs using the [audd.io](https://audd.io/) API. It is built with Django for the backend, Bootstrap for the frontend, and uses AWS S3 Bucket for file storage. The app is built with a focus on assisting businesses and professionals in the music industry. Please note that this application necessitates the use of certain APIs, for which paid subscriptions may be required. 
+BDM QC Buddy is a music recognition web application that allows users to scan and identify songs using the [audd.io](https://audd.io/) API. It is built with Django for the backend, Bootstrap for the frontend, and uses AWS S3 Bucket for file storage. The app is built with a focus on assisting businesses and professionals in the music industry. Please note that this application necessitates the use of certain APIs, for which paid subscriptions may be required. 
 
 ![Screenshot_2](https://github.com/TonnyG95/BDM-Music-Recognition/assets/47572512/443f6e04-4a1a-4fe4-95b6-7416431967ce)
 
@@ -62,7 +62,7 @@ The bucket is publicly accessible and here you can see our settings in the bucke
             "Effect": "Allow",
             "Principal": "*",
             "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::your-bucket-name/*"
+            "Resource": "arn:aws:s3:::your-bucket-name/*" 
         }
     ]
 }
@@ -125,7 +125,7 @@ The bucket is publicly accessible and here you can see our settings in the bucke
 
 - **Backend**: [Django](https://www.djangoproject.com/)
 - **Frontend**: [Bootstrap](https://getbootstrap.com/)
-- **Song Recognition**: [audd.io API](https://audd.io/)
+- **Song Recognition**: [Audd.io API](https://audd.io/)
 - **File Storage**: [AWS S3 Bucket](https://aws.amazon.com/s3/)
 
 ### Backend Technologies
@@ -199,7 +199,7 @@ Since this is a Django application, you can't deploy it simply like you would wi
 - [Vercel](https://vercel.com/)
 - [Heroku](https://www.heroku.com/) 
 
-**From all platforms we deployed this app on, the easiest and simplest solution was Render, which also has a free tier. The 2nd place was Vercel, followed by Heroku. As you would expect, deployment to Amazon Web Services was the most complicated. Check a few tutorials and give it a try.**
+From all platforms we deployed this app on, the easiest and simplest solution was Render, which also has a free tier. The 2nd place was Vercel, followed by Heroku. And as you would expect, deployment to Amazon Web Services was the most complicated. Check a few tutorials and give it a try.
 
 ### Step by Step
 
@@ -214,6 +214,7 @@ import os
 # Main Settings
 
 os.environ["SECRET_KEY"] = "Your secret key"
+os.environ["DEBUG"] = "0" 
 
 # Audd.io API Key
 os.environ["api_token"] = "Your API token"
